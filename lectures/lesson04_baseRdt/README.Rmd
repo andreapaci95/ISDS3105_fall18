@@ -50,10 +50,10 @@ typeof(iphoneSales)
 ```
 
 
-Indexing works similarly to vectors, but note the difference between _extracting_ and _selecting_:
+Indexing works similarly to vectors, but note the difference between _extracting_ and _subsetting_:
 
 ```{r}
-#selecting
+#subsetting
 iphoneSales['iPhone4S']
 iphoneSales[2]
 #extracting
@@ -69,17 +69,17 @@ iphoneSales$iPhone4S
 # use dataframe[row,col] to
 
 #extract the first two elements of column "IPhone6s"
-
+#iphoneSales[['iPhone6S']][1:2]
 #subset iphoneSales to a dataframe with only time, iPhone5C, IPhoneX
-
+#iphoneSales[, c("time","iPhone5C","iPhoneX")]
 #keep only the rows where the sales for iPhoneSE are higher than 7 AND are not NA (AND = &, OR = |, NOT = !)
-
+#iphoneSales[!is.na(iphoneSales$iPhoneSE)&iphoneSales$iPhoneSE>7, 5]
 #Use %in% to keep only the rows for c("Sep 2014", "Sep 2015", "Sep 2018")
-
+#iphoneSales[iphoneSales$time%in%c("Sep 2014", "Sep 2015", "Sep 2018"),]
 #calculate the mean() of the IPhone7 sold 
-
+#mean(iphoneSales[!is.na(iphoneSales$iPhone7),'iPhone7'])
 #use inline code to print the mean of the iphone sold in Jun 2018
-
+#iphoneSales[iphoneSales$time == 'Jun 2018' & !is.na(iphoneSales[iphoneSales$time=='Jun 2018',]),]
 ```
 
 

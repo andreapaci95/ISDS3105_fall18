@@ -187,7 +187,9 @@ Use `sum()` and the vector `menu` to calculate the cost of the DDSLab research l
 menu <- c(pizza = 8, lasagne = 7.50, pasta = 7)
 receipt <- c(Dario = 'lasagne', Som = 'pizza', Sun = 'pasta', Jo = 'pizza', Gabe = 'pasta', Biagio = 'pasta')
 ```
-
+sum(menu[receipt])
+#or
+sum(menu[c(2,1,3,1,3,3)])
 
 
 Recursive Vectors - lists
