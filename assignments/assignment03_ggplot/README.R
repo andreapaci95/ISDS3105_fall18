@@ -40,7 +40,7 @@ ggplot(bad_drivers_reshaped, aes(bad_drivers_reshaped$insurance_premiums, bad_dr
 #'   - insurance_premiums and perc_alcohol
 #'   - insurance_premiums and perc_speeding
 #'   - insurance_premiums and perc_not_distracted
-   
+ggplot(bad_drivers_reshaped) + geom_point(aes(insurance_premiums, perc)) + facet_wrap(~ViolationType, scales='free')
 #' 10. Mute the code for both charts and add a title to both. Knit to html.
 ggplot(bad_drivers_reshaped, aes(bad_drivers_reshaped$insurance_premiums, bad_drivers_reshaped$perc,)) +
 geom_point(aes(color=ViolationType)) + ggtitle("Insurance premiums by percentage of ViolationType")
