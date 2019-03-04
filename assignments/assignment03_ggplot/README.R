@@ -35,8 +35,6 @@ bad_drivers_sorted_premium[1:5,c("state","insurance_premiums")]
 library(tidyr)
 bad_drivers_reshaped <- gather(bad_drivers, ViolationType, perc, perc_speeding:perc_not_distracted)
 #' 9. Use facetting (DO NOT use 3 distinct calls to `ggplot()`) to plot 3 dot plots for the correlation between:
-ggplot(bad_drivers_reshaped, aes(bad_drivers_reshaped$insurance_premiums, bad_drivers_reshaped$perc,)) +
-  geom_point(aes(color=ViolationType))
 #'   - insurance_premiums and perc_alcohol
 #'   - insurance_premiums and perc_speeding
 #'   - insurance_premiums and perc_not_distracted
@@ -45,6 +43,8 @@ ggplot(bad_drivers_reshaped) + geom_point(aes(insurance_premiums, perc)) + facet
 ggplot(bad_drivers_reshaped, aes(bad_drivers_reshaped$insurance_premiums, bad_drivers_reshaped$perc,)) +
 geom_point(aes(color=ViolationType)) + ggtitle("Insurance premiums by percentage of ViolationType")
 
+ggplot(bad_drivers_reshaped) + geom_point(aes(insurance_premiums, perc)) + facet_wrap(~ViolationType, scales='free') +
+ ggtitle(label = "Insurance premiums by different Violation Types")
 
 
 

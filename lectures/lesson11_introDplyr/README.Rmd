@@ -72,6 +72,7 @@ To manipulate dataframes:
 `filter()` retrieves all rows that evaluate to `TRUE`:
 
 ```{r}
+library(dplyr)
 #to retain all Spanish males:
 selfiesCasualties %>% 
   filter(country == 'Spain' & gender == 'Male')
@@ -82,23 +83,27 @@ selfiesCasualties %>%
 
 1. Using `titanicDt`, filter the count of female children who did not survive
 ```{r}
-
+titanicDt %>% 
+  filter(Sex == 'Female' & Age == 'Child' )
 ```
 
 2. Using `beerDt`, filter the records from 1903 to 1997 (use the shortcut `dplyr::between()`)
 ```{r}
-
+beerDt %>% 
+  filter(dplyr::between(Year, 1903, 1997))
 
 ```
 
 3. Using `untidyReview`, filter all records with missing values on `reviewLocation`. Hint: you need to use `is.na()` to test what elements are missing.
 ```{r}
-
+untidyReview %>% 
+  filter(is.na(reviewLocation))
 ```
 
 4. Using `selfiesCasualties`, filter all records for victims who dies abroad (`country` different than `nationality`)
 ```{r}
-
+selfiesCasualties %>% 
+  filter(!(country == nationality))
 ```
 
 To filter positionally, use `slice()` or `filter(between(row_number(), 1, 10))`. For instance, to filter the first 3 rows from `titanicDt`
@@ -122,12 +127,14 @@ By default, `distinct` retains only the columns of the grouping variables. Use `
 
 1. Using `selfiesCasualties`, select distinct levels for `class` and keep all variables
 ```{r}
-
+selfiesCasualties %>% 
+  distinct(class, .keep_all = T)
 ```
 
 2. Using `titanicDt`, create a 2 columns dataset for the unique combinations of `Age` and `Sex`
 ```{r}
-
+titanicDt %>% 
+  distinct(Age, Sex)
 ```
 
 
@@ -143,12 +150,14 @@ selfiesCasualties %>%
 
 1. Using `titanicDt`, arrange by Class, Age, Sex
 ```{r}
-
+titanicDt %>% 
+  arrange(Class, Age, Sex)
 ```
 
 2. Using `titanicDt`, arrange descending by `n` (check the examples for `desc()`)
 ```{r}
-
+titanicDt %>% 
+  arrange(desc(n))
 ```
 
 ## Manipulate Columns
@@ -165,12 +174,12 @@ To select multiple columns, you can use `class:age` (from variable class to vari
 
 1. Using `sn_revenue`, select only variables for company names and year 2015.
 ```{r}
-
+sn_revenue %>%  select(company, y2015)
 ```
 
 2. Using `untidyReview`, select only the variables containing review ratings.
 ```{r}
-
+untidyReview %>%  select(reviewOverall:reviewValue)
 ```
 
 
@@ -184,17 +193,17 @@ selfiesCasualties %>%
 
 1. In `beerDt`, convert the consumption from gallons per capita to liters (1 gallon 3.78 liters)
 ```{r}
-
+beerDt %>%  mutate(LitersCapita = GallonsCapita *3.78)
 ```
 
 2. In `socialNetwork_users` add a percent sign to the variable percent (use `paste0()`)
 ```{r}
-
+socialNetwork_users %>%  mutate(percent = paste0(percent, '%'))
 ```
 
 3. In `untidyReview`, turn `reviewStayYear` into a integer
 ```{r}
-
+untidyReview_new <- untidyReview %>%  mutate(reviewStayYear = as.integer(reviewStayYear))
 ```
 
 
@@ -206,6 +215,8 @@ selfiesCasualties %>%
 selfiesCasualties %>% 
   group_by(country, gender) %>% 
   summarise(tot = n())
+
+# use ungroup() if you want to do a new summarise() on the preexisting group by
 ```
 
 Note that every time you use `summarise()`, your tibble drops one grouping level. For instance in the latter example, data are still grouped by country, and any further dplyr verb would apply groupwise unless we `ungroup()` first.
@@ -217,20 +228,18 @@ titanicDt %>%
  group_by(Class) %>%
  summarise(tot = mean(n))
 
-titanicDt %>%
- group_by(Class, Survived = "No") %>%
- dplyr::summarise(average = base::mean(n))
-
 ```
 
 2. Using `titanicDt`, calculate the average casualties by gender (note that the dataset has both survivors/non-survivors counts)
 ```{r}
-
+titanicDt %>% group_by(Sex) %>% 
+  summarise(average = mean(n))
 ```
 
 3. Using `beerDt`, calculate the average consumption before and after your birthyear (hint: you may create a new variable)
 ```{r}
-
+beerDt %>%  mutate(my_birthday = ifelse(Year < 1995, 'before_myBirthday', 'after_myBirthday')) %>% 
+  group_by(my_birthday) %>%  summarise(average = mean(GallonsCapita))
 ```
 
 4. Using `titanicDt`, calulcate the count of casualties by nationality, then arrange descending.
